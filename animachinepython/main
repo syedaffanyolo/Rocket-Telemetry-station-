@@ -1,0 +1,14 @@
+import csv
+
+from vpython import *
+rocket = cylinder(pos=vector(0,5,5),color=color.white,length=5,radius=5)
+file = open("GYRO_DATA_RAW.csv")
+csvreader = csv.reader(file)
+header = next(csvreader)
+print(header)
+rows = []
+for row in csvreader:
+    rows.append(row)
+hello = rows[0][0]
+print(int(hello) + 1)
+file.close()
