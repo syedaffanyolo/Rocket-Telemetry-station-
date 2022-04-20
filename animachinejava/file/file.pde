@@ -54,10 +54,10 @@ void draw(){
       rotation[1] = a1*b2+b1*a2+c1*d2-d1*c2;                                  // check this 
       rotation[2] = a1*c2-b1*d2+c1*a2+d1*b2;
       rotation[3] = a1*d2+b1*c2-c1*b2+d1*a2;
-      Q0[0]= Q1[0];
-       Q0[1]= Q1[1];
-        Q0[2]= Q1[2];
-         Q0[3]= Q1[3];
+  Q0[0]= rotation[0];
+Q0[1]= rotation[1];
+Q0[2]= rotation[2];
+Q0[3]= rotation[3];
    // println("w "+rotation[0],"x " + rotation[1],"y " + rotation[2],"z " + rotation[3]);
    
         float sinr_cosp = 2.0 * (rotation[0] * rotation[1] + rotation[2] * rotation[3]);
@@ -87,7 +87,7 @@ void draw(){
      //cylin rotate
         pushMatrix();    
     translate( 225, 225, -100 );
-  // rotateX((180/2));
+   rotateX((180/2));
    // rotateY(180/2);
     //rotateZ(180/2);
     //rotateZ(HALF_PI);
