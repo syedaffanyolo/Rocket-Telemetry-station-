@@ -41,7 +41,7 @@ void draw(){
    norm[2] = wZ/mag;
    theta = (mag * c);
    
-   float[] Q1 = {cos(theta/2.0), -(norm[0] * sin(theta/2.0)), -(norm[1] * sin(theta/2.0)), -(norm[2] * sin(theta/2.0))};
+   float[] Q1 = {cos(theta/2.0), (norm[0] * sin(theta/2.0)), (norm[1] * sin(theta/2.0)), (norm[2] * sin(theta/2.0))};
     //
     //println();
     
@@ -92,9 +92,9 @@ void draw(){
     //rotateZ(180/2);
     //rotateZ(HALF_PI);
     println("X " + degrees(wX) + "Y " + degrees(wY)  + "Z " + degrees(wZ) );
-    rotateX(wX);
-    rotateY(wZ);
-    rotateZ(wY);
+    rotateX(X);
+    rotateY(Z);
+    rotateZ(Y);
     drawCylinder( 30, 30, 300 );
     popMatrix();
 
