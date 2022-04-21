@@ -3,5 +3,7 @@
   
   bugs to fix 
   
-hahahaha none oh wait one
+
 1) set an offset to center the cylinder 
+2)drift along z axis 
+
