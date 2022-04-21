@@ -1,6 +1,5 @@
 Table RAW_DATA;
 float X,Y,Z;
-float a;
 float dt, prevtime, curtime;
 int i = 0;
 float mag = 0;
@@ -8,6 +7,7 @@ float theta;
 float[] norm = {0,0,0};
 float[] Q0 = {1,0,0,0};
 float[] rotation = {0,0,0,0};
+float biasz = 0.01;
 boolean oneloop = true;
 import processing.opengl.*;
 void setup() {
@@ -25,7 +25,7 @@ void draw(){
     TableRow row = RAW_DATA.getRow(i);
     float wX = row.getFloat("X"); // rad/s
     float wY = row.getFloat("Y"); // rad/s
-    float wZ = row.getFloat("Z"); // rad/s
+    float wZ = row.getFloat("Z") + biasz; // rad/s
     float curtime = row.getFloat("TIME"); // ms
     while(oneloop == true){
       prevtime = curtime;     // this loop runs only once to get the initial time at startup
@@ -83,7 +83,7 @@ void draw(){
     float cosy_cosp = 1.0-2.0 * (rotation[2] * rotation[2] + rotation[3] * rotation[3]);
     Z = atan2(siny_cosp,cosy_cosp);
     
-    println("X " + degrees(wX) + "Y " + degrees(wY)  + "Z " + degrees(wZ) );
+    println("Z " + Z );
      
     // Draw rotated cylinder.
     pushMatrix();    

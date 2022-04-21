@@ -3,5 +3,5 @@
   
   bugs to fix 
   
-1)drift along z axis 
+    none
 
