@@ -23,15 +23,17 @@ void draw(){
 
     // Read data
     TableRow row = RAW_DATA.getRow(i);
-    i++;
     float wX = row.getFloat("X"); // rad/s
     float wY = row.getFloat("Y"); // rad/s
     float wZ = row.getFloat("Z"); // rad/s
     float curtime = row.getFloat("TIME"); // ms
-
+    while(oneloop == true){
+      prevtime = curtime;     // this loop runs only once to get the initial time at startup
+      oneloop = false;
+    }
     dt = (curtime - prevtime)/1000.0; // delta time in seconds
     prevtime = curtime;
-  
+    i++;
     // Convert rates to instantaneous rotation theta about axis norm (format {x,y,z})
     mag = sqrt(sq(wX)+sq(wY)+sq(wZ));
     norm[0] = wX/mag;
@@ -86,6 +88,7 @@ void draw(){
     // Draw rotated cylinder.
     pushMatrix();    
     translate( 225, 225, -100 );
+    rotateX(PI/2);
     rotateX(X);
     rotateY(Z);
     rotateZ(Y);
