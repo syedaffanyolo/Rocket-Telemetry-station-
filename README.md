@@ -1,7 +1,14 @@
-# post-flight-rocket-orientation-viewer-software
-  3D projection and orientation representation of a rocket's gyro measurements using quaternions
+# TELEMETRY STATION
   
   bugs to fix 
   
     none
+
+  TO - DO 
+
+1) add video functionality 
+2) graph plots 
+3) state indicator 
+4) UI tweaks along the way
+
 

@@ -1,3 +1,4 @@
+PImage back;
 Table RAW_DATA;
 float X,Y,Z;
 float dt, prevtime, curtime;
@@ -10,15 +11,19 @@ float[] rotation = {0,0,0,0};
 float biasz = 0.0015; // gyro drift value biased to z axis
 boolean oneloop = true;
 import processing.opengl.*;
+
 void setup() {
-  size(450, 450, OPENGL);
+  
+  size(1000, 1000, OPENGL);
+  surface.setResizable(true);
   prevtime = 0;
-  RAW_DATA = loadTable("GYRO_DATA_RAW.csv", "header");
+  RAW_DATA = loadTable("GYRO_DATA_RAW.csv", "header"); // raw data from csv
+  back = loadImage("back.jpg"); // background image
 }
 void draw(){
-    background(0, 128, 255);
+  
+    background(0);
     lights();
-    //translate(width/2, height/2);
     fill(255, 128, 0);
 
     // Read data
@@ -33,6 +38,7 @@ void draw(){
     }
     dt = (curtime - prevtime)/1000.0; // delta time in seconds
     prevtime = curtime;
+  
     i++;
     // Convert rates to instantaneous rotation theta about axis norm (format {x,y,z})
     mag = sqrt(sq(wX)+sq(wY)+sq(wZ));
@@ -82,23 +88,110 @@ void draw(){
     float siny_cosp = 2.0 * (rotation[0] * rotation[3] + rotation[1] * rotation[2]);
     float cosy_cosp = 1.0-2.0 * (rotation[2] * rotation[2] + rotation[3] * rotation[3]);
     Z = atan2(siny_cosp,cosy_cosp);
-    
-    println("Z " + Z );
      
-    // Draw rotated cylinder.
-    pushMatrix();    
-    translate( 225, 225, -100 );
+          
+    // Draw background
+    pushMatrix();
+    translate(-150,-200,-500);
+    fill(0, 128, 255);
+    rect(250,800,800,1000);
+    texture(back);
+    image(back,-200,800);
+    back.resize(1800,800);
+    popMatrix();
+    
+    // make rocket and present telemeetery 
+    rawTelemetry(curtime/1000);
+    makeRocket();
+    delay(5);
+}
+void rawTelemetry(Float eta){
+  
+      pushMatrix();
+    translate(350,50,-100);
+    fill(255);
+    textSize(20);
+    text("RAW TELEMETRY",500,500);
+    popMatrix();
+    
+     pushMatrix();
+    translate(350,150,-100);
+    fill(255);
+    textSize(15);
+    text("PITCH:   " + degrees(X)+"°",500,500);
+    popMatrix();
+    
+     pushMatrix();
+    translate(350,170,-100);
+    fill(255);
+    textSize(15);
+    text("YAW:    " + degrees(Z)+"°",500,500);
+    popMatrix();
+    
+     pushMatrix();
+    translate(350,190,-100);
+    fill(255);
+    textSize(15);
+    text("ROLL:    " + degrees(Y)+"°",500,500);
+    popMatrix();
+    
+     pushMatrix();
+    translate(350,210,-100);
+    fill(255);
+    textSize(15);
+    text("ETA:    " + eta+"s",500,500);
+    popMatrix();
+    
+     pushMatrix();
+    translate(350,230,-100);
+    fill(255);
+    textSize(15);
+    text("ALT:    " + "m",500,500);
+    popMatrix();
+    
+     pushMatrix();
+    translate(350,250,-100);
+    fill(255);
+    textSize(15);
+    text("TEMP:    " + "°C",500,500);
+    popMatrix();
+    
+      pushMatrix();
+    translate(350,270,-100);
+    fill(255);
+    textSize(15);
+    text("PRESSURE:    " +"hPA",500,500);
+    popMatrix();
+    
+    
+  
+}
+void makeRocket(){
+      pushMatrix();  
+    fill(110,106,0);
+    translate( 500, 850, -100 );
     rotateX(PI/2);
     rotateX(X);
     rotateY(Z);
     rotateZ(Y);
-    drawCylinder( 30, 30, 300 );
+    pushMatrix(); 
+    translate( 0, 0, 200 );
+    drawCylinder( 30, 30, 1, 100 );
     popMatrix();
-
-    delay(25);
+    drawCylinder(30, 30, 30, 300 ); 
+    pushMatrix();
+    translate( 0, 0, -120 );
+    rotateZ(PI/2);
+    drawCylinder( 2, 60, 30, 50 );
+    popMatrix();
+    pushMatrix();
+    fill(225);
+    translate( 0, 0, -120 );
+    drawCylinder( 2, 60, 30, 50 );
+    popMatrix();
+    popMatrix();
 }
-
-void drawCylinder( int sides, float r, float h)
+void drawCylinder( int sides, float r1, float r2, float h)
 {
     float angle = 360 / sides;
     float halfHeight = h / 2;
@@ -106,8 +199,8 @@ void drawCylinder( int sides, float r, float h)
     // draw top of the tube
     beginShape();
     for (int i = 0; i < sides; i++) {
-        float x = cos( radians( i * angle ) ) * r;
-        float y = sin( radians( i * angle ) ) * r;
+        float x = cos( radians( i * angle ) ) * r1;
+        float y = sin( radians( i * angle ) ) * r1;
         vertex( x, y, -halfHeight);
     }
     endShape(CLOSE);
@@ -115,8 +208,8 @@ void drawCylinder( int sides, float r, float h)
     // draw bottom of the tube
     beginShape();
     for (int i = 0; i < sides; i++) {
-        float x = cos( radians( i * angle ) ) * r;
-        float y = sin( radians( i * angle ) ) * r;
+        float x = cos( radians( i * angle ) ) * r2;
+        float y = sin( radians( i * angle ) ) * r2;
         vertex( x, y, halfHeight);
     }
     endShape(CLOSE);
@@ -124,10 +217,12 @@ void drawCylinder( int sides, float r, float h)
     // draw sides
     beginShape(TRIANGLE_STRIP);
     for (int i = 0; i < sides + 1; i++) {
-        float x = cos( radians( i * angle ) ) * r;
-        float y = sin( radians( i * angle ) ) * r;
-        vertex( x, y, halfHeight);
-        vertex( x, y, -halfHeight);    
+        float x1 = cos( radians( i * angle ) ) * r1;
+        float y1 = sin( radians( i * angle ) ) * r1;
+        float x2 = cos( radians( i * angle ) ) * r2;
+        float y2 = sin( radians( i * angle ) ) * r2;
+        vertex( x1, y1, -halfHeight);
+        vertex( x2, y2, halfHeight);    
     }
     endShape(CLOSE);
 
