@@ -7,7 +7,7 @@ float theta;
 float[] norm = {0,0,0};
 float[] Q0 = {1,0,0,0};
 float[] rotation = {0,0,0,0};
-float biasz = 0.01;
+float biasz = 0.0015; // gyro drift value biased to z axis
 boolean oneloop = true;
 import processing.opengl.*;
 void setup() {
