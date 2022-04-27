@@ -127,8 +127,6 @@ void draw(){
   float wY = (row.getFloat("Y") - biasy) * angleConverter; // rad/s
   float wZ = (row.getFloat("Z") - biasz)  * angleConverter;// rad/s
   float alti = row.getFloat("ALT"); // m
-  float temp = row.getFloat("TEMP"); // c
-  float press = row.getFloat("PRESS"); // hpa
   float curtime = row.getFloat("TIME"); // ms
   float aX = row.getFloat("AX"); // m/s
   float aY = row.getFloat("AY"); // m/s
